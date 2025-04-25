@@ -180,7 +180,10 @@ document.addEventListener('DOMContentLoaded', () => {
       cashoutInput.value = '';
       cashoutInput.oninput = () => {
         const cashout = parseFloat(cashoutInput.value) || 0;
-        document.getElementById('settlementText').textContent = calculateSettlement(lastResult, 'maxOdd', cashout);
+        const settlementText = calculateSettlement(lastResult, 'maxOdd', cashout);
+        document.getElementById('settlementText').textContent = settlementText;
+        // Make the "copy settlement" button visible inside the settlementText container
+        document.getElementById('copySettlement').style.display = 'inline-block';
       };
       cashoutInput.oninput(); // Trigger on first open
     }
@@ -192,7 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
       cashoutInput.value = '';
       cashoutInput.oninput = () => {
         const cashout = parseFloat(cashoutInput.value) || 0;
-        document.getElementById('settlementText').textContent = calculateSettlement(lastResult, 'minOdd', cashout);
+        const settlementText = calculateSettlement(lastResult, 'minOdd', cashout);
+        document.getElementById('settlementText').textContent = settlementText;
+        // Make the "copy settlement" button visible inside the settlementText container
+        document.getElementById('copySettlement').style.display = 'inline-block';
       };
       cashoutInput.oninput(); // Trigger on first open
     }
@@ -201,7 +207,10 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('bothWin').addEventListener('click', () => {
     if (lastResult) {
       cashoutGroup.style.display = 'none'; // Hide on both win
-      document.getElementById('settlementText').textContent = calculateSettlement(lastResult, 'both');
+      const settlementText = calculateSettlement(lastResult, 'both');
+      document.getElementById('settlementText').textContent = settlementText;
+      // Make the "copy settlement" button visible inside the settlementText container
+      document.getElementById('copySettlement').style.display = 'inline-block';
     }
   });
 
