@@ -84,43 +84,43 @@ function calculateSettlement(result, winType, cashout = 0) {
     const netLoss = originalLoss + cashout;
     const lossPerPerson = netLoss / 2;
     settlement =
-      `${result.maxOdd} Profit: $${formatNumber(result.profitMin)}<br>` +
-      `${result.minOdd} Loss: $${formatNumber(result.maxAmount)}<br>` +
-      `Loss before cashout: $${formatNumber(Math.abs(originalLoss))}<br>` +
-      `Cashout: $${formatNumber(cashout)}<br>` +
-      `Loss after cashout: $${formatNumber(Math.abs(netLoss))}<br>` +
-      `Per Person: $${formatNumber(Math.abs(lossPerPerson))}<br>` +
-      `${result.maxOdd} to ${result.minOdd} Transfer $${formatNumber(result.profitMin - lossPerPerson)}`;
+      `${result.maxOdd} Profit: ₹${formatNumber(result.profitMin)}<br>` +
+      `${result.minOdd} Loss: ₹${formatNumber(result.maxAmount)}<br>` +
+      `Loss before cashout: ₹${formatNumber(Math.abs(originalLoss))}<br>` +
+      `Cashout: ₹${formatNumber(cashout)}<br>` +
+      `Loss after cashout: ₹${formatNumber(Math.abs(netLoss))}<br>` +
+      `Per Person: ₹${formatNumber(Math.abs(lossPerPerson))}<br>` +
+      `${result.maxOdd} to ${result.minOdd} Transfer ₹${formatNumber(result.profitMin - lossPerPerson)}`;
   } else if (winType === 'minOdd') {
     const originalLoss = result.profitMax - result.minAmount;
     const netLoss = originalLoss + cashout;
     const lossPerPerson = netLoss / 2;
     settlement =
-      `${result.minOdd} Profit: $${formatNumber(result.profitMax)}<br>` +
-      `${result.maxOdd} Loss: $${formatNumber(result.minAmount)}<br>` +
-      `Loss before cashout: $${formatNumber(Math.abs(originalLoss))}<br>` +
-      `Cashout: $${formatNumber(cashout)}<br>` +
-      `Loss after cashout: $${formatNumber(Math.abs(netLoss))}<br>` +
-      `Per Person: $${formatNumber(Math.abs(lossPerPerson))}<br>` +
-      `${result.minOdd} to ${result.maxOdd} Transfer $${formatNumber(result.profitMax - lossPerPerson)}`;
+      `${result.minOdd} Profit: ₹${formatNumber(result.profitMax)}<br>` +
+      `${result.maxOdd} Loss: ₹${formatNumber(result.minAmount)}<br>` +
+      `Loss before cashout: ₹${formatNumber(Math.abs(originalLoss))}<br>` +
+      `Cashout: ₹${formatNumber(cashout)}<br>` +
+      `Loss after cashout: ₹${formatNumber(Math.abs(netLoss))}<br>` +
+      `Per Person: ₹${formatNumber(Math.abs(lossPerPerson))}<br>` +
+      `${result.minOdd} to ${result.maxOdd} Transfer ₹${formatNumber(result.profitMax - lossPerPerson)}`;
   } else if (winType === 'both') {
     const firstWinAmount = result.minAmount * result.maxOdd - result.minAmount;
     const secondWinAmount = result.maxAmount * result.minOdd - result.maxAmount;
     const totalProfit = firstWinAmount + secondWinAmount;
     const profitPerPerson = totalProfit / 2;
 
-    settlement = `Profit on ${formatNumber(result.maxOdd)}: $${formatNumber(firstWinAmount)}<br>` +
-      `Profit on ${formatNumber(result.minOdd)}: $${formatNumber(secondWinAmount)}<br>` +
-      `Total Profit: $${formatNumber(totalProfit)}<br>` +
-      `Per Person: $${formatNumber(profitPerPerson)}<br>`;
+    settlement = `Profit on ${formatNumber(result.maxOdd)}: ₹${formatNumber(firstWinAmount)}<br>` +
+      `Profit on ${formatNumber(result.minOdd)}: ₹${formatNumber(secondWinAmount)}<br>` +
+      `Total Profit: ₹${formatNumber(totalProfit)}<br>` +
+      `Per Person: ₹${formatNumber(profitPerPerson)}<br>`;
 
     let transfer;
     if (firstWinAmount > secondWinAmount) {
       transfer = firstWinAmount - profitPerPerson;
-      settlement += `${result.maxOdd} to ${result.minOdd} Transfer $${formatNumber(Math.abs(transfer))}`;
+      settlement += `${result.maxOdd} to ${result.minOdd} Transfer ₹${formatNumber(Math.abs(transfer))}`;
     } else {
       transfer = secondWinAmount - profitPerPerson;
-      settlement += `${result.minOdd} to ${result.maxOdd} Transfer $${formatNumber(Math.abs(transfer))}`;
+      settlement += `${result.minOdd} to ${result.maxOdd} Transfer ₹${formatNumber(Math.abs(transfer))}`;
     }
   }
 
@@ -197,11 +197,11 @@ function calculateSettlement(result, winType, cashout = 0) {
       lastResult = result;
 
       resultText.innerHTML = `
-        Put $${formatNumber(result.minAmount)} on odds ${formatNumber(result.maxOdd)}<br>
-        Put $${formatNumber(result.maxAmount)} on odds ${formatNumber(result.minOdd)}<br>
-        Maximum Loss: $${formatNumber(result.loss)}<br>
-        Profit if first bet wins: $${formatNumber(result.profitMin)}<br>
-        Profit if second bet wins: $${formatNumber(result.profitMax)}
+        Put ₹${formatNumber(result.minAmount)} on odds ${formatNumber(result.maxOdd)}<br>
+        Put ₹${formatNumber(result.maxAmount)} on odds ${formatNumber(result.minOdd)}<br>
+        Maximum Loss: ₹${formatNumber(result.loss)}<br>
+        Profit if first bet wins: ₹${formatNumber(result.profitMin)}<br>
+        Profit if second bet wins: ₹${formatNumber(result.profitMax)}
       `;
 
       document.getElementById('maxOddWin').textContent = `Odds ${formatNumber(result.maxOdd)} Wins`;
