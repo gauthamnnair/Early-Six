@@ -76,101 +76,57 @@ document.addEventListener('DOMContentLoaded', () => {
     return Number(num).toFixed(2);
   }
 
-function calculateSettlement(result, winType, cashout = 0) {
-  let settlement = '';
+  function calculateSettlement(result, winType, cashout = 0) {
+    let settlement = '';
 
-  if (winType === 'maxOdd') {
-    const originalLoss = result.profitMin - result.maxAmount;
-    const netLoss = originalLoss + cashout;
-    const lossPerPerson = netLoss / 2;
-    settlement =
-      `${result.maxOdd} Profit: ₹${formatNumber(result.profitMin)}<br>` +
-      `${result.minOdd} Loss: ₹${formatNumber(result.maxAmount)}<br>` +
-      `Loss before cashout: ₹${formatNumber(Math.abs(originalLoss))}<br>` +
-      `Cashout: ₹${formatNumber(cashout)}<br>` +
-      `Loss after cashout: ₹${formatNumber(Math.abs(netLoss))}<br>` +
-      `Per Person: ₹${formatNumber(Math.abs(lossPerPerson))}<br>` +
-      `${result.maxOdd} to ${result.minOdd} Transfer ₹${formatNumber(result.profitMin - lossPerPerson)}`;
-  } else if (winType === 'minOdd') {
-    const originalLoss = result.profitMax - result.minAmount;
-    const netLoss = originalLoss + cashout;
-    const lossPerPerson = netLoss / 2;
-    settlement =
-      `${result.minOdd} Profit: ₹${formatNumber(result.profitMax)}<br>` +
-      `${result.maxOdd} Loss: ₹${formatNumber(result.minAmount)}<br>` +
-      `Loss before cashout: ₹${formatNumber(Math.abs(originalLoss))}<br>` +
-      `Cashout: ₹${formatNumber(cashout)}<br>` +
-      `Loss after cashout: ₹${formatNumber(Math.abs(netLoss))}<br>` +
-      `Per Person: ₹${formatNumber(Math.abs(lossPerPerson))}<br>` +
-      `${result.minOdd} to ${result.maxOdd} Transfer ₹${formatNumber(result.profitMax - lossPerPerson)}`;
-  } else if (winType === 'both') {
-    const firstWinAmount = result.minAmount * result.maxOdd - result.minAmount;
-    const secondWinAmount = result.maxAmount * result.minOdd - result.maxAmount;
-    const totalProfit = firstWinAmount + secondWinAmount;
-    const profitPerPerson = totalProfit / 2;
+    if (winType === 'maxOdd') {
+      const originalLoss = result.profitMin - result.maxAmount;
+      const netLoss = originalLoss + cashout;
+      const lossPerPerson = netLoss / 2;
+      settlement =
+        `${result.maxOdd} Profit: ₹${formatNumber(result.profitMin)}\n` +
+        `${result.minOdd} Loss: ₹${formatNumber(result.maxAmount)}\n` +
+        `Loss before cashout: ₹${formatNumber(Math.abs(originalLoss))}\n` +
+        `Cashout: ₹${formatNumber(cashout)}\n` +
+        `Loss after cashout: ₹${formatNumber(Math.abs(netLoss))}\n` +
+        `Per Person: ₹${formatNumber(Math.abs(lossPerPerson))}\n` +
+        `${result.maxOdd} to ${result.minOdd} Transfer ₹${formatNumber(result.profitMin - lossPerPerson)}`;
+    } else if (winType === 'minOdd') {
+      const originalLoss = result.profitMax - result.minAmount;
+      const netLoss = originalLoss + cashout;
+      const lossPerPerson = netLoss / 2;
+      settlement =
+        `${result.minOdd} Profit: ₹${formatNumber(result.profitMax)}\n` +
+        `${result.maxOdd} Loss: ₹${formatNumber(result.minAmount)}\n` +
+        `Loss before cashout: ₹${formatNumber(Math.abs(originalLoss))}\n` +
+        `Cashout: ₹${formatNumber(cashout)}\n` +
+        `Loss after cashout: ₹${formatNumber(Math.abs(netLoss))}\n` +
+        `Per Person: ₹${formatNumber(Math.abs(lossPerPerson))}\n` +
+        `${result.minOdd} to ${result.maxOdd} Transfer ₹${formatNumber(result.profitMax - lossPerPerson)}`;
+    } else if (winType === 'both') {
+      const firstWinAmount = result.minAmount * result.maxOdd - result.minAmount;
+      const secondWinAmount = result.maxAmount * result.minOdd - result.maxAmount;
+      const totalProfit = firstWinAmount + secondWinAmount;
+      const profitPerPerson = totalProfit / 2;
 
-    settlement = `Profit on ${formatNumber(result.maxOdd)}: ₹${formatNumber(firstWinAmount)}<br>` +
-      `Profit on ${formatNumber(result.minOdd)}: ₹${formatNumber(secondWinAmount)}<br>` +
-      `Total Profit: ₹${formatNumber(totalProfit)}<br>` +
-      `Per Person: ₹${formatNumber(profitPerPerson)}<br>`;
+      settlement =
+        `Profit on ${formatNumber(result.maxOdd)}: ₹${formatNumber(firstWinAmount)}\n` +
+        `Profit on ${formatNumber(result.minOdd)}: ₹${formatNumber(secondWinAmount)}\n` +
+        `Total Profit: ₹${formatNumber(totalProfit)}\n` +
+        `Per Person: ₹${formatNumber(profitPerPerson)}\n`;
 
-    let transfer;
-    if (firstWinAmount > secondWinAmount) {
-      transfer = firstWinAmount - profitPerPerson;
-      settlement += `${result.maxOdd} to ${result.minOdd} Transfer ₹${formatNumber(Math.abs(transfer))}`;
-    } else {
-      transfer = secondWinAmount - profitPerPerson;
-      settlement += `${result.minOdd} to ${result.maxOdd} Transfer ₹${formatNumber(Math.abs(transfer))}`;
+      let transfer;
+      if (firstWinAmount > secondWinAmount) {
+        transfer = firstWinAmount - profitPerPerson;
+        settlement += `${result.maxOdd} to ${result.minOdd} Transfer ₹${formatNumber(Math.abs(transfer))}`;
+      } else {
+        transfer = secondWinAmount - profitPerPerson;
+        settlement += `${result.minOdd} to ${result.maxOdd} Transfer ₹${formatNumber(Math.abs(transfer))}`;
+      }
     }
+
+    return settlement;
   }
-
-  return settlement;
-}
-
-  document.querySelector('#app').innerHTML = `
-    <div class="container">
-      <h1>Early Six Calculater</h1>
-      <div class="form-group">
-        <label for="odd1">First Odd:</label>
-        <input type="number" id="odd1" step="1" min="1" required>
-      </div>
-      <div class="form-group">
-        <label for="odd2">Second Odd:</label>
-        <input type="number" id="odd2" step="1" min="1" required>
-      </div>
-      <div class="form-group">
-        <label for="choice">Calculation Type:</label>
-        <select id="choice">
-          <option value="1">Minimum Amount</option>
-          <option value="2">Maximum Amount</option>
-          <option value="3">Loss Amount</option>
-          <option value="4">Max Offer</option>
-        </select>
-      </div>
-      <div class="form-group" id="amountGroup">
-        <label for="amount">Amount:</label>
-        <input type="number" id="amount" step="1" min="0" required>
-      </div>
-      <button id="calculate">Calculate</button>
-
-      <div id="result" class="result">
-        <h3>Results:</h3>
-        <p id="resultText"></p>
-        <div class="settlement-buttons">
-          <button id="maxOddWin"></button>
-          <button id="minOddWin"></button>
-          <button id="bothWin">Both Win</button>
-        </div>
-	<div id="cashoutGroup" class="form-group" style="display: none;">
-              <label for="cashout" style="color: white;">Cashout Amount:</label>
-              <input type="number" id="cashout" step="0.01" min="0" />
-        </div>
-        <p id="settlementText" class="settlement-text"></p>
-        <button id="copySettlement">Copy Settlement</button>
-      </div>
-      <div id="error" class="error"></div>
-    </div>
-  `;
 
   let lastResult = null;
 
@@ -196,13 +152,12 @@ function calculateSettlement(result, winType, cashout = 0) {
       const result = calculateBets(odd1, odd2, choice, amount);
       lastResult = result;
 
-      resultText.innerHTML = `
-        Put ₹${formatNumber(result.minAmount)} on odds ${formatNumber(result.maxOdd)}<br>
-        Put ₹${formatNumber(result.maxAmount)} on odds ${formatNumber(result.minOdd)}<br>
-        Maximum Loss: ₹${formatNumber(result.loss)}<br>
-        Profit if first bet wins: ₹${formatNumber(result.profitMin)}<br>
-        Profit if second bet wins: ₹${formatNumber(result.profitMax)}
-      `;
+      resultText.textContent =
+        `Put ₹${formatNumber(result.minAmount)} on odds ${formatNumber(result.maxOdd)}\n` +
+        `Put ₹${formatNumber(result.maxAmount)} on odds ${formatNumber(result.minOdd)}\n` +
+        `Maximum Loss: ₹${formatNumber(result.loss)}\n` +
+        `Profit if first bet wins: ₹${formatNumber(result.profitMin)}\n` +
+        `Profit if second bet wins: ₹${formatNumber(result.profitMax)}`;
 
       document.getElementById('maxOddWin').textContent = `Odds ${formatNumber(result.maxOdd)} Wins`;
       document.getElementById('minOddWin').textContent = `Odds ${formatNumber(result.minOdd)} Wins`;
@@ -216,46 +171,42 @@ function calculateSettlement(result, winType, cashout = 0) {
     }
   });
 
-const cashoutGroup = document.getElementById('cashoutGroup');
-const cashoutInput = document.getElementById('cashout');
+  const cashoutGroup = document.getElementById('cashoutGroup');
+  const cashoutInput = document.getElementById('cashout');
 
-document.getElementById('maxOddWin').addEventListener('click', () => {
-  if (lastResult) {
-    cashoutGroup.style.display = 'block';
-    cashoutInput.value = '';
-    cashoutInput.oninput = () => {
-      const cashout = parseFloat(cashoutInput.value) || 0;
-      document.getElementById('settlementText').innerHTML = calculateSettlement(lastResult, 'maxOdd', cashout);
-    };
-    cashoutInput.oninput(); // Trigger on first open
-  }
-});
+  document.getElementById('maxOddWin').addEventListener('click', () => {
+    if (lastResult) {
+      cashoutGroup.style.display = 'block';
+      cashoutInput.value = '';
+      cashoutInput.oninput = () => {
+        const cashout = parseFloat(cashoutInput.value) || 0;
+        document.getElementById('settlementText').textContent = calculateSettlement(lastResult, 'maxOdd', cashout);
+      };
+      cashoutInput.oninput(); // Trigger on first open
+    }
+  });
 
-document.getElementById('minOddWin').addEventListener('click', () => {
-  if (lastResult) {
-    cashoutGroup.style.display = 'block';
+  document.getElementById('minOddWin').addEventListener('click', () => {
+    if (lastResult) {
+      cashoutGroup.style.display = 'block';
+      cashoutInput.value = '';
+      cashoutInput.oninput = () => {
+        const cashout = parseFloat(cashoutInput.value) || 0;
+        document.getElementById('settlementText').textContent = calculateSettlement(lastResult, 'minOdd', cashout);
+      };
+      cashoutInput.oninput(); // Trigger on first open
+    }
+  });
 
-    cashoutInput.value = '';
-    cashoutInput.oninput = () => {
-      const cashout = parseFloat(cashoutInput.value) || 0;
-      document.getElementById('settlementText').innerHTML = calculateSettlement(lastResult, 'minOdd', cashout);
-    };
-    cashoutInput.oninput(); // Trigger on first open
-  }
-});
+  document.getElementById('bothWin').addEventListener('click', () => {
+    if (lastResult) {
+      cashoutGroup.style.display = 'none'; // Hide on both win
+      document.getElementById('settlementText').textContent = calculateSettlement(lastResult, 'both');
+    }
+  });
 
-document.getElementById('bothWin').addEventListener('click', () => {
-  if (lastResult) {
-    cashoutGroup.style.display = 'none'; // Hide on both win
-    document.getElementById('settlementText').innerHTML = calculateSettlement(lastResult, 'both');
-  }
-});
   document.getElementById('copySettlement').addEventListener('click', () => {
-    const html = document.getElementById('settlementText').innerHTML;
-    const tempDiv = document.createElement('div');
-    tempDiv.innerHTML = html;
-    const text = tempDiv.innerText;
-
+    const text = document.getElementById('settlementText').textContent;
     navigator.clipboard.writeText(text).then(() => {
       alert('Settlement copied to clipboard!');
     }).catch(err => {
