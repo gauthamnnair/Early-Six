@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
         profitMax: maxAmount * (minOdd - 1)
       };
     } else if (choice === '4') {
-      minAmount = 2000 / maxOdd;
-      maxAmount = 2000 / minOdd;
+      minAmount = 2100 / maxOdd;
+      maxAmount = 2100 / minOdd;
       loss = minAmount + maxAmount - Math.min(minAmount * maxOdd, maxAmount * minOdd);
 
       return {
